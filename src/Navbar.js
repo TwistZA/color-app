@@ -4,6 +4,9 @@ import Slider from "rc-slider";
 import "./Navbar.css";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 
 export default class Navbar extends Component {
   constructor(props) {
@@ -11,14 +14,20 @@ export default class Navbar extends Component {
 
     this.state = {
       format: "hex",
+      open: false,
     };
 
-    this.handleChange = this.handleChange.bind(this);
+    this.handleFormatChange = this.handleFormatChange.bind(this);
+    this.closeSnackbar = this.closeSnackbar.bind(this);
   }
 
-  handleChange(e) {
-    this.setState({ format: e.target.value });
+  handleFormatChange(e) {
+    this.setState({ format: e.target.value, open: true });
     this.props.handleChange(e.target.value);
+  }
+
+  closeSnackbar() {
+    this.setState({ open: false });
   }
 
   render() {
@@ -42,17 +51,45 @@ export default class Navbar extends Component {
             />
           </div>
         </div>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          onChange={this.handleChange}
-          value={this.state.format}
-        >
-          <MenuItem value="hex">HEX - #fffff</MenuItem>
-          <MenuItem value="rgb">RGB - rgb(255,255,255)</MenuItem>
-          <MenuItem value="rgba">RGBA - rgba(255,255,255, 1.0)</MenuItem>
-        </Select>
-        <div className="select-container"></div>
+        <div className="select-container">
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            onChange={this.handleFormatChange}
+            value={this.state.format}
+          >
+            <MenuItem value="hex">HEX - #fffff</MenuItem>
+            <MenuItem value="rgb">RGB - rgb(255,255,255)</MenuItem>
+            <MenuItem value="rgba">RGBA - rgba(255,255,255, 1.0)</MenuItem>
+          </Select>
+        </div>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+          open={this.state.open}
+          autoHideDuration={3000}
+          message={
+            <span id="message-id">
+              Format Changed To {format.toUpperCase()}
+            </span>
+          }
+          ContentProps={{ "aria-describedby": "message-id" }}
+          onClose={this.closeSnackbar}
+          action={[
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              key="close"
+              aria-label="close"
+              onClick={this.closeSnackbar}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>,
+          ]}
+        />
       </header>
     );
   }
