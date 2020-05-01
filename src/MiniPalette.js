@@ -45,8 +45,4 @@ function MiniPalette(props) {
   );
 }
 
-// MiniPalette.propTypes = {
-//   classes: PropTypes.object.isRequired,
-// };
-
 export default withStyles(styles)(MiniPalette);
