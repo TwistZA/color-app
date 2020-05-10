@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import "rc-slider/assets/index.css";
-import Slider from "rc-slider";
-import "./Navbar.css";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import { Link } from "react-router-dom";
+import Slider from "rc-slider";
+import { withStyles } from "@material-ui/core/styles";
+import styles from "./styles/NavbarStyles";
 
-export default class Navbar extends Component {
+class Navbar extends Component {
   constructor(props) {
     super(props);
 
@@ -32,19 +33,19 @@ export default class Navbar extends Component {
   }
 
   render() {
-    const { level, changeLevel, showingAllColors } = this.props;
+    const { level, changeLevel, showingAllColors, classes } = this.props;
     const { format } = this.state;
 
     return (
-      <header className="Navbar">
-        <div className="logo">
+      <header className={classes.Navbar}>
+        <div className={classes.logo}>
           <Link to="/">reactcolorpicker</Link>
         </div>
 
         {showingAllColors && (
-          <div className="slider-container">
+          <div>
             <span>Level:{level}</span>
-            <div className="slider">
+            <div className={classes.slider}>
               <Slider
                 defaultValue={this.props.level}
                 min={100}
@@ -56,7 +57,7 @@ export default class Navbar extends Component {
           </div>
         )}
 
-        <div className="select-container">
+        <div className={classes.selectContainer}>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -99,3 +100,5 @@ export default class Navbar extends Component {
     );
   }
 }
+
+export default withStyles(styles)(Navbar);
